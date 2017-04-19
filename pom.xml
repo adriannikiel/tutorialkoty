@@ -11,5 +11,6 @@
 	<modules>
 		<module>koty-domain</module>
 		<module>koty-application</module>
+		<module>koty-webapp</module>
 	</modules>
 </project>

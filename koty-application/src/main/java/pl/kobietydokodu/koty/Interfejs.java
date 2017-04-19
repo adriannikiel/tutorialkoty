@@ -17,10 +17,10 @@ public class Interfejs {
     	String wyborUzytkownika;
     	do {
     		System.out.println();
-    		System.out.println("Wybierz, co chcesz zrobiÄ‡, a nastÄ™pnie zatwierdÅº enterem:");
+    		System.out.println("Wybierz, co chcesz zrobiæ, a nastêpnie zatwierdŸ enterem:");
 	    	System.out.println("[1] Dodaj nowego kota");
-	    	System.out.println("[2] PokaÅ¼ wszystkie koty");
-	    	System.out.println("[x] ZakoÅ„cz");
+	    	System.out.println("[2] Poka¿ wszystkie koty");
+	    	System.out.println("[x] Zakoñcz");
 			wyborUzytkownika = getUserInput();
 	    	if (wyborUzytkownika.equals("1")) {
 	    		dodajKota();
@@ -34,7 +34,7 @@ public class Interfejs {
 	private static void pokazKoty() {
 		System.out.println();
 		System.out.println("#########################################################");
-		System.out.println("######                 LISTA KOTÃ“W                 ######");
+		System.out.println("######                 LISTA KOTÓW                 ######");
 		System.out.println("#########################################################");
 		
 		Kot kot;
@@ -46,16 +46,16 @@ public class Interfejs {
 		Pattern wzorzecNumeru = Pattern.compile("[0-9]+");
 		String numerWczytany;
 		do {
-			System.out.print("KtÃ³rego kota chcesz poznaÄ‡ bliÅ¼ej? ");
+			System.out.print("Którego kota chcesz poznaæ bli¿ej? ");
 			numerWczytany = getUserInput();
 		} while (!wzorzecNumeru.matcher(numerWczytany).matches());
 		
 		Integer numerKota = Integer.parseInt(numerWczytany);
 		if (kotDao.getKoty().size()>numerKota) {
 			Kot wybranyKot = kotDao.getKoty().get(numerKota);
-			System.out.println("Wybrany kot ma na imie "+wybranyKot.getImie()+", waÅ¼y "+wybranyKot.getWaga()+", urodziÅ‚ siÄ™ "+wybranyKot.getDataUrodzenia().toString()+", a opiekuje siÄ™ nim "+wybranyKot.getImieOpiekuna());
+			System.out.println("Wybrany kot ma na imiê "+wybranyKot.getImie()+", wa¿y "+wybranyKot.getWaga()+", urodzi³‚ siê™ "+wybranyKot.getDataUrodzenia().toString()+", a opiekuje siê nim "+wybranyKot.getImieOpiekuna());
 		} else {
-			System.out.println("Niestety, nie znalazÅ‚em kota o wybranym numerze :( SprobÃ³j ponownie lub go dodaj!");
+			System.out.println("Niestety, nie znalaz³em kota o wybranym numerze :( Sprobój ponownie lub go dodaj!");
 		}
 	}
 
@@ -65,20 +65,20 @@ public class Interfejs {
 		System.out.println("######                 DODAJ  KOTA                 ######");
 		System.out.println("#########################################################");
 		Kot kot = new Kot();
-		System.out.print("Podaj imiÄ™ kota: ");
+		System.out.print("Podaj imiê kota: ");
         kot.setImie(getUserInput());
 
         Pattern wzorzecDaty = Pattern.compile("[0-9]{4}.[0-1]?[0-9].[0-3]?[0-9]");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
         String dataUrodzeniaWczytana;
         do {
-            System.out.print("Podaj datÄ™ urodzenia kota w formacie RRRR.MM.DD: ");
+            System.out.print("Podaj datê urodzenia kota w formacie RRRR.MM.DD: ");
             dataUrodzeniaWczytana = getUserInput();
             if (wzorzecDaty.matcher(dataUrodzeniaWczytana).matches()) {
             	try {
             		kot.setDataUrodzenia(sdf.parse(dataUrodzeniaWczytana));
             	} catch (ParseException pe) {
-            		System.out.println("CoÅ› jest nie tak z datÄ…! PrzykÅ‚adowa data: 2014.01.05");
+            		System.out.println("Coœ jest nie tak z dat¹! Przyk³adowa data: 2014.01.05");
             	}
             }
         } while (kot.getDataUrodzenia()==null);
@@ -86,7 +86,7 @@ public class Interfejs {
         Pattern wzorzecWagi = Pattern.compile("[0-9]+(\\.[0-9]+)?");
         String wagaWczytana;
         do {
-            System.out.print("Podaj wagÄ™ kota: ");
+            System.out.print("Podaj wagê kota: ");
             wagaWczytana = getUserInput();
             
             if (wzorzecWagi.matcher(wagaWczytana).matches()) {
@@ -99,7 +99,7 @@ public class Interfejs {
 
         kotDao.dodajKota(kot);
         
-        System.out.println("DziÄ™kujÄ™, teraz wiem o kocie naprawdÄ™ wszystko! DodaÅ‚em go do naszego zbioru.");
+        System.out.println("Dziêkujê, teraz wiem o kocie naprawdê wszystko! Doda³em go do naszego zbioru.");
 	}
 
     public static String getUserInput() {
