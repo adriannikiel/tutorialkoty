@@ -10,6 +10,7 @@
 		package -->
 	<context:annotation-config />   <!-- In future, it will allow us to use annotations also in classes, which 
 		we configure manually -->
+	<mvc:annotation-driven />	<!-- Allows to e.g. use annotation to validate fields -->
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,19 +14,19 @@
 		<tbody>
 				<tr>
 					<th>Imię</th>
-					<td>Tesla</td>
+					<td>${kot.imie}</td>
 				</tr>
 				<tr>
 					<th>Data urodzenia</th>
-					<td>12.04.2013</td>				
+					<td><fmt:formatDate pattern="dd.MM.yyyy" value="${kot.dataUrodzenia}"/></td>				
 				</tr>
 				<tr>
 					<th>Waga</th>
-					<td>6.0 kg</td>				
+					<td><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${kot.waga}"/> kg</td>				
 				</tr>
 				<tr>
 					<th>Imię opiekuna</th>
-					<td>Ania</td>				
+					<td>${kot.imieOpiekuna}</td>				
 				</tr>
 			</tbody>
 	</table>	
