@@ -4,12 +4,32 @@ import java.util.Date;
 
 public class Kot {
 
+	private int id;
     private String imie;
     private Date dataUrodzenia;
     private Float waga;
     private String imieOpiekuna;
 
-    public String getImie() {
+    public Kot(int id, String imie, Date dataUrodzenia, Float waga, String imieOpiekuna) {
+    	this.id = id;
+		this.imie = imie;
+		this.dataUrodzenia = dataUrodzenia;
+		this.waga = waga;
+		this.imieOpiekuna = imieOpiekuna;
+	}
+
+	public Kot() {
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getImie() {
         return imie;
     }
 

@@ -14,15 +14,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import pl.kobietydokodu.koty.KotDAO;
+import pl.kobietydokodu.koty.JDBCKotDAO;
+//import pl.kobietydokodu.koty.KotDAO;
 import pl.kobietydokodu.koty.domain.Kot;
 import pl.kobietydokodu.koty.dto.KotDTO;
 
 @Controller
 public class KotyController {
 
+	//@Autowired
+	//private KotDAO kotDao;
 	@Autowired
-	private KotDAO kotDao;
+	private JDBCKotDAO kotDao;
+	
+	int kotCount=0;
 	
 	@RequestMapping("/lista")
 	public String listaKotow(Model model) {
@@ -48,10 +53,13 @@ public class KotyController {
 				e.printStackTrace();
 			}
 			
+			kot.setId(kotCount);
 			kot.setImie(kotDto.getImie());
 			kot.setImieOpiekuna(kotDto.getImieOpiekuna());
 			kot.setWaga(kotDto.getWaga());
 			kotDao.dodajKota(kot);
+			
+			kotCount++;
 			
 			return "redirect:/lista";
 		} 
