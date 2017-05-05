@@ -28,7 +28,7 @@ public class JDBCKotDAO {
 		try {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, kot.getId());
+			ps.setLong(1, kot.getId());
 			ps.setString(2, kot.getImie());
 			java.util.Date utilDataUrodzenia = kot.getDataUrodzenia();
 			ps.setDate(3, new java.sql.Date(utilDataUrodzenia.getTime()));
@@ -65,11 +65,11 @@ public class JDBCKotDAO {
 			Kot kot = null;
 			while (rs.next()) {
 				kot = new Kot();
-				kot.setId(rs.getInt("id"));
+				kot.setId(rs.getLong("id"));
 				kot.setImie(rs.getString("imie"));
-				kot.setImieOpiekuna(rs.getString("imieOpiekuna"));
+				kot.setImieOpiekuna(rs.getString("imie_opiekuna"));
 				kot.setWaga(rs.getFloat("waga"));
-				kot.setDataUrodzenia(rs.getDate("dataUrodzenia"));
+				kot.setDataUrodzenia(rs.getDate("data_urodzenia"));
 				koty.add(kot);
 			}
 			rs.close();
@@ -104,11 +104,11 @@ public class JDBCKotDAO {
 			Kot kot = null;
 			if (rs.next()) {
 				kot = new Kot();
-				kot.setId(rs.getInt("id"));
+				kot.setId(rs.getLong("id"));
 				kot.setImie(rs.getString("imie"));
-				kot.setImieOpiekuna(rs.getString("imieOpiekuna"));
+				kot.setImieOpiekuna(rs.getString("imie_opiekuna"));
 				kot.setWaga(rs.getFloat("waga"));
-				kot.setDataUrodzenia(rs.getDate("dataUrodzenia"));
+				kot.setDataUrodzenia(rs.getDate("data_urodzenia"));
 			}
 			rs.close();
 			ps.close();

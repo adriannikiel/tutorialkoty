@@ -2,15 +2,31 @@ package pl.kobietydokodu.koty.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="koty")
 public class Kot {
 
-	private int id;
+	@Id
+	private Long id;
+	
+	@Column(name="imie", nullable=false)
     private String imie;
+	
+	@Column(name="data_urodzenia", nullable=false)
     private Date dataUrodzenia;
+	
+	@Column(name="waga", nullable=false)
     private Float waga;
+	
+	@Column(name="imie_opiekuna", nullable=false)
     private String imieOpiekuna;
 
-    public Kot(int id, String imie, Date dataUrodzenia, Float waga, String imieOpiekuna) {
+	public Kot(Long id, String imie, Date dataUrodzenia, Float waga, String imieOpiekuna) {
     	this.id = id;
 		this.imie = imie;
 		this.dataUrodzenia = dataUrodzenia;
@@ -21,11 +37,11 @@ public class Kot {
 	public Kot() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

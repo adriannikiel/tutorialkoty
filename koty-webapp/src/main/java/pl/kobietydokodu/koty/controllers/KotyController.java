@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import pl.kobietydokodu.koty.JDBCKotDAO;
+import pl.kobietydokodu.koty.HibernateKotDAO;
+//import pl.kobietydokodu.koty.JDBCKotDAO;
 //import pl.kobietydokodu.koty.KotDAO;
 import pl.kobietydokodu.koty.domain.Kot;
 import pl.kobietydokodu.koty.dto.KotDTO;
@@ -24,10 +25,12 @@ public class KotyController {
 
 	//@Autowired
 	//private KotDAO kotDao;
+	//@Autowired
+	//private JDBCKotDAO kotDao;
 	@Autowired
-	private JDBCKotDAO kotDao;
+	private HibernateKotDAO kotDao;
 	
-	int kotCount=0;
+	Long kotCount=0L;
 	
 	@RequestMapping("/lista")
 	public String listaKotow(Model model) {
@@ -71,7 +74,7 @@ public class KotyController {
 	
 	
 	@RequestMapping("/kot-{id}")
-	public String szczegolyKota(@PathVariable("id") Integer id, Model model) {
+	public String szczegolyKota(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("kot", kotDao.getKotById(id));
 		return "szczegoly";
 	}
