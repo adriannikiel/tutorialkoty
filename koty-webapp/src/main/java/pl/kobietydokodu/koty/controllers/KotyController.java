@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import pl.kobietydokodu.koty.InterfejsDAO;
+import pl.kobietydokodu.koty.ZabawkaDAO;
 //import pl.kobietydokodu.koty.HibernateKotDAO;
 //import pl.kobietydokodu.koty.JDBCKotDAO;
 //import pl.kobietydokodu.koty.KotDAO;
@@ -32,6 +33,8 @@ public class KotyController {
 	//private HibernateKotDAO kotDao;
 	@Autowired
 	private InterfejsDAO kotDao;
+	@Autowired
+	private ZabawkaDAO zabawkaDao;
 	
 	Long kotCount=0L;
 	
@@ -79,6 +82,7 @@ public class KotyController {
 	@RequestMapping("/kot-{id}")
 	public String szczegolyKota(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("kot", kotDao.findById(id));
+		model.addAttribute("zabawki", zabawkaDao.findByKotek_id(id));
 		return "szczegoly";
 	}
 	

@@ -1,10 +1,12 @@
 package pl.kobietydokodu.koty.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,17 +27,9 @@ public class Kot {
 	
 	@Column(name="imie_opiekuna", nullable=false)
     private String imieOpiekuna;
-
-	public Kot(Long id, String imie, Date dataUrodzenia, Float waga, String imieOpiekuna) {
-    	this.id = id;
-		this.imie = imie;
-		this.dataUrodzenia = dataUrodzenia;
-		this.waga = waga;
-		this.imieOpiekuna = imieOpiekuna;
-	}
-
-	public Kot() {
-	}
+	
+	@OneToMany(mappedBy="kotek")
+	List<Zabawka> zabawki;
 
 	public Long getId() {
 		return id;
@@ -76,5 +70,13 @@ public class Kot {
     public void setImieOpiekuna(String imieOpiekuna) {
         this.imieOpiekuna = imieOpiekuna;
     }
+
+	public List<Zabawka> getZabawki() {
+		return zabawki;
+	}
+
+	public void setZabawki(List<Zabawka> zabawki) {
+		this.zabawki = zabawki;
+	}
 
 }
