@@ -26,6 +26,10 @@
 		</tbody>
 	</table>		
 	<br />
+		<c:if test="${pageContext.request.userPrincipal.name != null}">
+	   		<h2>${pageContext.request.userPrincipal.name}
+           | <a href="<c:url value="/j_spring_security_logout" />" > Logout</a></h2>
+		</c:if>
 	<hr />
 	Uwaga! W kontekście użycia HTML oraz sposobu budowania stron, te rozwiązania są bardziej antyprzykładem niż materiałem do nauki!<br />
 	Jeśli chciałabyś także tworzyć same widoki i pisac poprawny, dobrze skonstruowany kod HTML, zachęcamy do zapoznania się np. z frameworkiem <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>.
