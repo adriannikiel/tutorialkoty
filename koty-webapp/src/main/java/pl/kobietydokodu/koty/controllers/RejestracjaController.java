@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.kobietydokodu.koty.UzytkownikDAO;
 import pl.kobietydokodu.koty.domain.Uzytkownik;
 import pl.kobietydokodu.koty.dto.RejestracjaDTO;
+import pl.kobietydokodu.koty.service.EmailService;
 
 @Controller
 public class RejestracjaController {
 	
 	@Autowired
 	private UzytkownikDAO uzytkownikDAO;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@RequestMapping(value={"/login"}, method=RequestMethod.GET)
 	public String stronaLogowowania(
@@ -50,9 +54,15 @@ public class RejestracjaController {
 			Uzytkownik uzytkownik = new Uzytkownik();
 			
 			uzytkownik.setUsername(rejestracjaDto.getUser());
+			uzytkownik.setEmail(rejestracjaDto.getEmail());
 			uzytkownik.setPassword(rejestracjaDto.getPass());
 			
 			uzytkownikDAO.save(uzytkownik);
+			
+			String mail = uzytkownik.getEmail();
+			String content = "Witam, utworzono u¿ytkownika " + uzytkownik.getUsername();
+			
+			emailService.sendEmail(mail, "Pomyslna rejestracja kobietydokodu", content);
 			
 			return "redirect:/login";
 		} 

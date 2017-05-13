@@ -23,6 +23,15 @@
 					</td>
 			 	</tr>
 			 	<tr>
+			 		<td>Email:</td>
+					<td>
+						<form:input type="text" path="email" />
+						<c:if test="${pageContext.request.method=='POST'}">
+							<form:errors path="email" cssClass="error"/>
+						</c:if>
+					</td>
+			 	</tr>
+			 	<tr>
 			 		<td>Hasło:</td>
 					<td>
 						<form:input type="password" path="pass" />
