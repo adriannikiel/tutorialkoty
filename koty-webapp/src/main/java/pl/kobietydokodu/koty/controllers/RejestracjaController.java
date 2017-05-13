@@ -1,14 +1,15 @@
 package pl.kobietydokodu.koty.controllers;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import pl.kobietydokodu.koty.UzytkownikDAO;
 import pl.kobietydokodu.koty.domain.Uzytkownik;
@@ -20,14 +21,21 @@ public class RejestracjaController {
 	@Autowired
 	private UzytkownikDAO uzytkownikDAO;
 	
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public String stronaLogowowania(HttpServletRequest request) {
+	@RequestMapping(value={"/login"}, method=RequestMethod.GET)
+	public String stronaLogowowania(
+			@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout,
+			Model model) {
 		
-		if (request.getUserPrincipal() == null) {
-			return "redirect:/spring_security_login";
-		} else {
-			return "redirect:/lista";
+		if (error != null) {
+			model.addAttribute("error", "Invalid username and password!");
 		}
+
+		if (logout != null) {
+			model.addAttribute("msg", "You've been logged out successfully.");
+		}
+		
+		return "login";
 	}
 	
 	@RequestMapping(value="/rejestracja", method=RequestMethod.GET)
@@ -46,7 +54,7 @@ public class RejestracjaController {
 			
 			uzytkownikDAO.save(uzytkownik);
 			
-			return "redirect:/lista";
+			return "redirect:/login";
 		} 
 		return "rejestracja";			
 	}

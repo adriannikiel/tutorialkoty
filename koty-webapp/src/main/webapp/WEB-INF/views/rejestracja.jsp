@@ -6,10 +6,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login page</title>
+<title>Register page</title>
 </head>
 <body>
-	<h3>Logowanie z użyciem użytkownika i hasła</h3>
+	<h3>Rejestracja z użyciem użytkownika i hasła</h3>
 	<form:form method="POST" modelAttribute="rejestracjaDto">
 		<table>
 			<tbody>

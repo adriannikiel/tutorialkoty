@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,17 +39,20 @@ public class KotyController {
 	
 	Long kotCount=0L;
 	
-	@RequestMapping("/lista")
+	@Secured("ROLE_USER")
+	@RequestMapping({"/lista","/"})
 	public String listaKotow(Model model) {
 		model.addAttribute("koty", kotDao.findAll());
 		return "lista";
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value="/dodaj", method=RequestMethod.GET)
 	public String dodajKotaFormularz(@ModelAttribute("kotDto") @Valid KotDTO kotDto, BindingResult result) {
 		return "dodaj";
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value="/dodaj", method=RequestMethod.POST)
 	public String dodajKota(@ModelAttribute("kotDto") @Valid KotDTO kotDto, BindingResult result) {
 		if (!result.hasErrors()) {
@@ -78,7 +82,7 @@ public class KotyController {
 
 	}
 	
-	
+	@Secured("ROLE_USER")
 	@RequestMapping("/kot-{id}")
 	public String szczegolyKota(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("kot", kotDao.findById(id));

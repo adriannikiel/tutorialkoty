@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,13 +27,15 @@ public class ZabawkiController {
 	private InterfejsDAO kotDao;
 	@Autowired
 	private ZabawkaDAO zabawkaDao;
-		
+	
+	@Secured("ROLE_USER")
 	@RequestMapping(value="/kot-{id}/zabawka/dodaj", method=RequestMethod.GET)
 	public String dodajZabawkeFormularz(@ModelAttribute("zabawkaDto") @Valid ZabawkaDTO zabawkaDto, BindingResult result, @PathVariable("id") Long id, Model model) {
 		model.addAttribute("kot", kotDao.findById(id));
 		return "dodajZabawke";
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping(value="/kot-{id}/zabawka/dodaj", method=RequestMethod.POST)
 	public String dodajZabawke(@ModelAttribute("zabawkaDto") @Valid ZabawkaDTO zabawkaDto, BindingResult result, @PathVariable("id") Long id, Model model) {
 		model.addAttribute("kot", kotDao.findById(id));
@@ -62,6 +65,7 @@ public class ZabawkiController {
 
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping("/kot-{id1}/zabawka/zabawka-{id2}")
 	public String szczegolyZabawki(@PathVariable("id1") Long id1, @PathVariable("id2") Long id2, Model model) {
 		model.addAttribute("kot", kotDao.findById(id1));
@@ -69,6 +73,7 @@ public class ZabawkiController {
 		return "szczegolyZabawki";
 	}
 	
+	@Secured("ROLE_USER")
 	@RequestMapping("/kot-{id1}/zabawka/usun-{id2}")
 	public String usunZabawke(@PathVariable("id1") Long id1, @PathVariable("id2") Long id2) {
 		Zabawka zabawka = zabawkaDao.findById(id2);
