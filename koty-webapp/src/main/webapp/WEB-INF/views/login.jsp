@@ -6,16 +6,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login page</title>
+<link href="<c:url value="/resources/css/default.css" />" rel="stylesheet">
 </head>
 <body>
 	<c:if test="${not empty error}">
-		<font size="3" color="red">${error}</font>
+		<div class="error">${error}</div>
 	</c:if>
 	<c:if test="${not empty msg}">
-		<font size="3" color="red">${msg}</font>
+		<div class="msg">${msg}</div>
 	</c:if>
-	<br />
-	<br />
+	
 	<c:set var="loginUrl"><c:url value="j_spring_security_check" /></c:set>
 	<form method="post" action="${loginUrl}">
 		<table>
@@ -37,6 +37,6 @@
 	</form>
 	<br />
 	<a href="rejestracja">Zarejestruj się</a>
-	<br />
+
 </body>
 </html>
