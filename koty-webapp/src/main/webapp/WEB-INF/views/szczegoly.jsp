@@ -44,7 +44,24 @@
 			</tr>
 		</tbody>
 	</table>
+	<c:choose>
+		<c:when test="${empty kot.fotka}">
+			<a href="kot-${kot.id}/zdjecie/dodaj"><spring:message
+					code="koty-webapp.KotyController.szczegoly.addPhoto" /></a>
+		</c:when>
+		<c:otherwise>
+			<a href="kot-${kot.id}/zdjecie/zdjecie-${kot.fotka.id}"><spring:message
+					code="koty-webapp.KotyController.szczegoly.downPhoto" /></a>
+			<a href="kot-${kot.id}/zdjecie/zdjecie-${kot.fotka.id}/usun"><spring:message
+					code="koty-webapp.KotyController.szczegoly.delPhoto" /></a>
+			<br />
+			<!-- 			<img -->
+			<%-- 				src=<c:url value = "/koty-webapp/resources/uploads/${fotka}" /> --%>
+			<!-- 				alt="Upload Image" height="150" width="150" /> -->
+		</c:otherwise>
+	</c:choose>
 	<br />
+	<hr />
 	<a href="kot-${kot.id}/zabawka/dodaj"><spring:message
 			code="koty-webapp.KotyController.szczegoly.add" /></a>
 	<table border="1">

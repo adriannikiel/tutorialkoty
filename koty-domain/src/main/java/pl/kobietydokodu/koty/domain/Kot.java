@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,6 +31,9 @@ public class Kot {
 	
 	@OneToMany(mappedBy="kotek")
 	List<Zabawka> zabawki;
+	
+	@OneToOne(mappedBy="kotek")
+	Zdjecie fotka;
 
 	public Long getId() {
 		return id;
@@ -79,4 +83,13 @@ public class Kot {
 		this.zabawki = zabawki;
 	}
 
+	public Zdjecie getFotka() {
+		return fotka;
+	}
+
+	public void setFotka(Zdjecie fotka) {
+		this.fotka = fotka;
+	}
+
+	
 }

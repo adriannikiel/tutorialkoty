@@ -55,7 +55,8 @@
 				</tr>
 				<tr>
 					<td colspan="2" align="right"><input type="submit"
-						value="<spring:message code="koty-webapp.KotyController.dodaj.add" />" /></td>
+						value="<spring:message code="koty-webapp.KotyController.dodaj.add" />" />
+					</td>
 				</tr>
 			</tbody>
 		</table>
