@@ -1,10 +1,8 @@
 package pl.kobietydokodu.koty.controllers;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +24,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 
 import pl.kobietydokodu.koty.InterfejsDAO;
 import pl.kobietydokodu.koty.ZabawkaDAO;
@@ -97,11 +104,6 @@ public class KotyController {
 		model.addAttribute("kot", kotDao.findById(id));
 		model.addAttribute("zabawki", zabawkaDao.findByKotek_id(id));
 
-		// if (kotDao.findById(id).getFotka() != null) {
-		// model.addAttribute("fotka",
-		// kotDao.findById(id).getFotka().getNazwaPliku());
-		// }
-
 		return "szczegoly";
 	}
 
@@ -140,60 +142,100 @@ public class KotyController {
 			}
 		}
 		// form filled incorrectly
-		return "kot-{id}/zdjecie/dodaj";
+		return "redirect:/kot-{id}/zdjecie/dodaj";
 	}
 
 	@RequestMapping(value = "/kot-{id1}/zdjecie/zdjecie-{zdjecieId}", method = RequestMethod.GET)
+	public void pokazFotke(@PathVariable("id1") Long id1, @PathVariable("zdjecieId") Long zdjecieId,
+			HttpServletResponse response) {
+
+		String bucketName = "anikiel.tutorial";
+		String accessKey = "AKIAJFDXOVEICJ2K444A";
+		String secretKey = "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";
+
+		Zdjecie zdjecie = zdjecieDao.findById(zdjecieId);
+		String key = zdjecie.getNazwaPliku();
+
+		try {
+			AmazonS3 s3client = new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
+			S3Object object = s3client.getObject(new GetObjectRequest(bucketName, key));
+			InputStream is = object.getObjectContent();
+
+			response.setContentType(zdjecie.getTypPliku());
+			response.setContentLength(zdjecie.getRozmiarPliku());
+			org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+
+		} catch (IOException ex) {
+			logger.info("B³¹d przy pobieraniu pliku", ex);
+			response.setStatus(404);
+		}
+
+	}
+
+	@RequestMapping(value = "/kot-{id1}/zdjecie/zdjecie-{zdjecieId}/pobierz", method = RequestMethod.GET)
 	public void pobierzFotke(@PathVariable("id1") Long id1, @PathVariable("zdjecieId") Long zdjecieId,
 			HttpServletResponse response) throws IOException {
 
 		final int BUFFER_SIZE = 1000000;
+
+		String bucketName = "anikiel.tutorial";
+		String accessKey = "AKIAJFDXOVEICJ2K444A";
+		String secretKey = "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";
+
 		Zdjecie zdjecie = zdjecieDao.findById(zdjecieId);
+		String key = zdjecie.getNazwaPliku();
 
-		String foldername = "D:\\Programming\\Eclipse\\workspace\\kobietyDoKodu\\AplikacjeWeboweSpring\\tutorialkoty\\koty-webapp\\resources\\uploads\\";
-		FileInputStream inputStream = new FileInputStream(foldername + zdjecie.getNazwaPliku());
+		try {
+			AmazonS3 s3client = new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
+			S3Object object = s3client.getObject(new GetObjectRequest(bucketName, key));
+			InputStream inputStream = object.getObjectContent();
 
-		response.setContentType(zdjecie.getTypPliku());
-		response.setContentLength(zdjecie.getRozmiarPliku());
+			response.setContentType(zdjecie.getTypPliku());
+			response.setContentLength(zdjecie.getRozmiarPliku());
 
-		String headerValue = String.format("attachment; filename=\"%s\"", zdjecie.getNazwaOryginalnaPliku());
-		response.setHeader("Content-Disposition", headerValue);
+			String headerValue = String.format("attachment; filename=\"%s\"", zdjecie.getNazwaOryginalnaPliku());
+			response.setHeader("Content-Disposition", headerValue);
 
-		OutputStream outStream = response.getOutputStream();
+			OutputStream outStream = response.getOutputStream();
 
-		byte[] buffer = new byte[BUFFER_SIZE];
-		int bytesRead = -1;
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int bytesRead = -1;
 
-		while ((bytesRead = inputStream.read(buffer)) != -1) {
-			outStream.write(buffer, 0, bytesRead);
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+				outStream.write(buffer, 0, bytesRead);
+			}
+
+			inputStream.close();
+			outStream.close();
+
+		} catch (IOException ex) {
+			logger.info("B³¹d przy pobieraniu pliku", ex);
+			response.setStatus(404);
 		}
-
-		inputStream.close();
-		outStream.close();
 	}
 
 	@Secured("ROLE_USER")
 	@RequestMapping(value = "/kot-{id1}/zdjecie/zdjecie-{zdjecieId}/usun", method = RequestMethod.GET)
 	public String usunFotke(@PathVariable("id1") Long id1, @PathVariable("zdjecieId") Long zdjecieId) {
 
+		String bucketName = "anikiel.tutorial";
+		String accessKey = "AKIAJFDXOVEICJ2K444A";
+		String secretKey = "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";
+
 		Zdjecie zdjecie = zdjecieDao.findById(zdjecieId);
+		String key = zdjecie.getNazwaPliku();
 
-		String foldername = "D:\\Programming\\Eclipse\\workspace\\kobietyDoKodu\\AplikacjeWeboweSpring\\tutorialkoty\\koty-webapp\\resources\\uploads\\";
-		File file = new File(foldername + zdjecie.getNazwaPliku());
+		try {
+			AmazonS3 s3client = new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
+			s3client.deleteObject(new DeleteObjectRequest(bucketName, key));
 
-		if (file.delete()) {
-			logger.info("File has been successfully deleted");
-		} else {
+			zdjecieDao.delete(zdjecieId);
+		} catch (Exception e) {
 			logger.error("Delete operation is failed.");
 		}
 
-		zdjecieDao.delete(zdjecieId);
-
 		return "redirect:/kot-{id1}";
-	}
-
-	public void pokazFotke() {
-
 	}
 
 	private String handleFileUpload(MultipartFile file) {
@@ -201,27 +243,20 @@ public class KotyController {
 			try {
 				UUID uuid = UUID.randomUUID();
 
-				String originalFilename = file.getOriginalFilename();
-				String extension = "";
+				String filename = "uploads/upload_" + uuid.toString();
+				String bucketName = "anikiel.tutorial";
+				String accessKey = "AKIAJFDXOVEICJ2K444A";
+				String secretKey = "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";
 
-				int i = file.getOriginalFilename().lastIndexOf('.');
-				if (i > 0) {
-					extension = originalFilename.substring(i + 1);
-				}
-
-				String filename = "D:\\Programming\\Eclipse\\workspace\\kobietyDoKodu\\AplikacjeWeboweSpring\\tutorialkoty\\koty-webapp\\resources\\uploads\\upload_"
-						+ uuid.toString() + "." + extension;
 				byte[] bytes = file.getBytes();
-				File fsFile = new File(filename);
-				fsFile.createNewFile();
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(fsFile));
-				stream.write(bytes);
-				stream.close();
+				InputStream inputStream = new ByteArrayInputStream(bytes);
+				AmazonS3 s3client = new AmazonS3Client(new BasicAWSCredentials(accessKey, secretKey));
+				s3client.putObject(new PutObjectRequest(bucketName, filename, inputStream, new ObjectMetadata()));
 
 				logger.info("File {} has been successfully uploaded as {}",
 						new Object[] { file.getOriginalFilename(), filename });
 
-				return fsFile.getName();
+				return filename;
 
 			} catch (Exception e) {
 				logger.error("File has not been uploaded", e);
