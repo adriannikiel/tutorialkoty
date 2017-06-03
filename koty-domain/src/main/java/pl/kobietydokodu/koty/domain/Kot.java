@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="koty")
 public class Kot {
@@ -29,9 +31,11 @@ public class Kot {
 	@Column(name="imie_opiekuna", nullable=false)
     private String imieOpiekuna;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="kotek")
 	List<Zabawka> zabawki;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy="kotek")
 	Zdjecie fotka;
 
@@ -90,6 +94,14 @@ public class Kot {
 	public void setFotka(Zdjecie fotka) {
 		this.fotka = fotka;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "{\"id\":" + id + 
+				",\"imie\":\"" + imie + 
+				"\",\"dataUrodzenia\":" + dataUrodzenia.getTime() +
+				",\"waga\":" + waga +
+				",\"imieOpiekuna\":\"" + imieOpiekuna + "\"}";
+	}
 	
 }
