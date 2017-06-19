@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><spring:message
-		code="koty-webapp.RejestracjaController.login.title" /></title>
+		code="koty-webapp.RegistrationController.login.title" /></title>
 <link href="<c:url value="/resources/css/default.css" />"
 	rel="stylesheet">
 </head>
@@ -26,30 +26,30 @@
 	<c:set var="loginUrl">
 		<c:url value="j_spring_security_check" />
 	</c:set>
-	<form method="post" action="${loginUrl}">
+	<form method="post" action="${loginUrl} ">
 		<table>
 			<tr>
 				<td><spring:message
-						code="koty-webapp.RejestracjaController.login.user" />:</td>
+						code="koty-webapp.RegistrationController.login.user" />:</td>
 				<td><input type="text" name="username" value=""></td>
 			</tr>
 			<tr>
 				<td><spring:message
-						code="koty-webapp.RejestracjaController.login.password" />:</td>
+						code="koty-webapp.RegistrationController.login.password" />:</td>
 				<td><input type="password" name="password" /></td>
 			</tr>
 			<tr>
 				<td colspan='2'><input name="submit" type="submit"
 					value="<spring:message
-						code="koty-webapp.RejestracjaController.login.login" />" /></td>
+						code="koty-webapp.RegistrationController.login.login" />" /></td>
 			</tr>
 		</table>
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
 	</form>
 	<br />
-	<a href="rejestracja"><spring:message
-			code="koty-webapp.RejestracjaController.login.register" /></a>
+	<a href="registration"><spring:message
+			code="koty-webapp.RegistrationController.login.register" /></a>
 
 </body>
 </html>
