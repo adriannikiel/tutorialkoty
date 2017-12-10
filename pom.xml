@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.kobietydokodu</groupId>
 	<artifactId>koty</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Aplikacja kursu kobietydokodu.pl</name>
 	<url>http://kobietydokodu.pl</url>
 	<description>Aplikacja realizowana jako część praktyczna kursu na stronie kobietydokodu.pl</description>
