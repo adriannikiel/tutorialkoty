@@ -1,4 +1,4 @@
-#Practical Java course
+# Practical Java course
 This repository contains source code to lessons from practical Java course using Spring Framework.
 
 Application is deployed on Amazon Web Services http://koty.anikiel.pl:
