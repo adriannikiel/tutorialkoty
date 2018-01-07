@@ -23,3 +23,7 @@ Application is deployed on Amazon Web Services http://koty.anikiel.pl:
 * Tomcat 7	- application server
 * SmartGit	- git client
 * MySQLWorkbench - mysql client
+
+## Example user
+User1
+Password1
